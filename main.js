@@ -567,6 +567,12 @@ function windowResizeBarWidth(arr) {
     }
 }
 
+$(".sortOptionBtn").on("click", function() {
+    if (bubbleTimeOut) {
+        clearTimeout(bubbleTimeOut);
+    }
+});
+
 //beginSort onclick
 beginSort.on("click", function() {
     var activeSortChoice = $(".active");
