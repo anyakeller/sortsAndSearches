@@ -510,7 +510,7 @@ var unsortedArr = [
     249
 ];
 // array sort in progress
-var arraySortInProgress = unsortedArr;
+var arraySortInProgress = unsortedArr.slice(0);
 var maxnum = Math.max(...unsortedArr);
 //create a data bar element function
 function makeDataBar(arr) {
@@ -538,16 +538,17 @@ function makeDataBar(arr) {
     });
 }
 
-function reset() {
+function reset(ar) {
     for (var i = 0; i < dataBars.length; i++) {
-        var barHeight = ((250 * unsortedArr) / maxnum).toString() + "px";
+        var barHeight = ((250 * ar[i]) / maxnum).toString() + "px";
 
         dataBars[i].css("height", barHeight);
     }
 }
 $("#reset").on("click", function() {
     clearTimeout(bubbleTimeOut);
-    reset();
+    console.log(unsortedArr);
+    reset(unsortedArr);
 });
 
 function pause() {
