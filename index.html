@@ -15,7 +15,7 @@
         <title>Sorts and Searches</title>
     </head>
     <body>
-        <div class="jumbotron jumbotron-fluid">
+        <div class="jumbotron jumbotron-fluid mb-4 py-2">
             <div class="container">
                 <h1 class="display-4">Sorts and Searches Visualizer</h1>
                 <p class="lead">
@@ -25,14 +25,16 @@
         </div>
         <div id="content" class="container-fluid  px-auto shadow-lg">
             <div class="row ">
-                <div class="mx-auto my-4">
+                <div class="mx-auto mt-4">
                     <div class="col-12">
+                        <label><h4 class="text-center">Sort Options</h4></label>
                         <div
-                            class="btn-group btn-group-toggle"
+                            class="btn-group btn-group-toggle sortOptnsRadio"
                             data-toggle="buttons"
                         >
+                            <!-- bubblesort -->
                             <label
-                                class="btn btn-secondary active sortOptionBtn"
+                                class="btn btn-secondary active sortOptionBtn sortOptnActive"
                                 data-sort="bubbleSort"
                             >
                                 <input
@@ -45,6 +47,7 @@
                                 />
                                 Bubble Sort
                             </label>
+                            <!-- quicksort -->
                             <label
                                 class="btn btn-secondary sortOptionBtn"
                                 data-sort="quickSort"
@@ -58,6 +61,7 @@
                                 />
                                 Quick Sort
                             </label>
+                            <!-- Fart sort -->
                             <label
                                 class="btn btn-secondary sortOptionBtn"
                                 data-sort="fartSort"
@@ -75,8 +79,76 @@
                     </div>
                 </div>
             </div>
-            <div class="row ">
-                <div class="mx-auto my-2">
+            <!-- QuickSortOptions -->
+            <div class="row">
+                <div
+                    class="mx-auto"
+                    id="quickSortOptionsToggle"
+                    style="display: none"
+                >
+                    <div class="col-12">
+                        <label
+                            ><p class="text-center">
+                                Quick Sort Options
+                            </p></label
+                        >
+                        <div
+                            class="btn-group btn-group-toggle"
+                            data-toggle="buttons"
+                        >
+                            <!-- First Index Pivot -->
+                            <label
+                                class="btn btn-secondary btn-sm btn-info active quickSortOptionBtn"
+                                data-sort="quickSortFirst"
+                            >
+                                <input
+                                    type="radio"
+                                    name="quickSortFirst"
+                                    id="quickSortFirst"
+                                    autocomplete="off"
+                                    checked
+                                    class="quickSortOptions quickSortOptionActive"
+                                />
+                                First Index Pivot
+                            </label>
+                            <!-- Last Index Pivot -->
+                            <label
+                                class="btn btn-secondary btn-sm btn-info quickSortOptionBtn"
+                                data-sort="quickSortLast"
+                            >
+                                <input
+                                    type="radio"
+                                    name="quickSortLast"
+                                    id="quickSortLast"
+                                    autocomplete="off"
+                                    class="quickSortOptions"
+                                />
+                                Last Index Pivot
+                            </label>
+                            <!-- Random Index Pivot -->
+                            <label
+                                class="btn btn-secondary btn-sm btn-info quickSortOptionBtn"
+                                data-sort="quickSortRandom"
+                            >
+                                <input
+                                    type="radio"
+                                    name="quickSortRandom"
+                                    id="quickSortRandom"
+                                    autocomplete="off"
+                                    class="quickSortOptions"
+                                />
+                                Random Index Pivot
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Sort Controls -->
+            <div class="row">
+                <div class="mx-auto my-4">
+                    <label
+                        ><h4 class="text-center">Animation Controls</h4></label
+                    >
                     <button
                         type="button"
                         class="btn btn-success"
@@ -102,6 +174,7 @@
                 <div class="col-12">
                     <div class="visualization"></div>
                 </div>
+                <div class="col-12"></div>
             </div>
         </div>
 
@@ -123,7 +196,7 @@
         ></script>
         <script>
             //GLOBAL VARS
-            var bubbleTimeOut;
+            var currentTimeOut;
 
             //GLOBAL helper functions
             //to resize bar height
@@ -132,9 +205,13 @@
                     ((250 * newvalue) / maxnum).toString() + "px";
                 barElement.css("height", newBarHeight);
             }
+            function sortStatus(algoName, status) {
+                arrayStatus.text(algoName + " " + status);
+            }
         </script>
-        <script src="sorts/bubblesort.js"></script>
-        <script src="main.js"></script>
+        <script src="js/sorts/bubblesort.js"></script>
+        <script src="js/sorts/quickSort.js"></script>
+        <script src="js/main.js"></script>
         <script>
             $(document).ready(function() {
                 // initialize setup
