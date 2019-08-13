@@ -584,6 +584,8 @@ function reset(ar) {
 
         dataBars[i].css("height", barHeight);
     }
+    arraySortInProgress = unsortedArr.slice(0);
+    currentTimeOut = null;
     sortStatus(currentSort, currentSortStatus);
 }
 $("#reset").on("click", function() {

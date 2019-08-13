@@ -1,11 +1,11 @@
-var issort = false;
-var interval;
+var issort;
 var currentar;
 var arleng;
 var data;
 var maxnum;
 function bubbleSort(ar, dataBars) {
-    maxnum == Math.max(...ar);
+    issort = false;
+    maxnum = Math.max(...ar);
     data = dataBars;
     //another way, declare is sorted as false; while, set is sorted to true, if there is a swap set it to false.
     //recursive method
