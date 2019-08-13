@@ -11,6 +11,8 @@
             crossorigin="anonymous"
         />
         <link rel="stylesheet" type="text/css" href="style.css" />
+        <!-- Paperscript -->
+        <script type="text/javascript" src="js/paper.js"></script>
 
         <title>Sorts and Searches</title>
     </head>
@@ -174,7 +176,9 @@
                 <div class="col-12">
                     <div class="visualization"></div>
                 </div>
-                <div class="col-12"></div>
+                <div class="col-12">
+                    <canvas id="paperVisualization" resize></canvas>
+                </div>
             </div>
         </div>
 
@@ -212,6 +216,7 @@
         <script src="js/sorts/bubblesort.js"></script>
         <script src="js/sorts/quickSort.js"></script>
         <script src="js/main.js"></script>
+        <!-- <script type="text/javascript" src="js/paperCanvas.js"></script> -->
         <script>
             $(document).ready(function() {
                 // initialize setup
