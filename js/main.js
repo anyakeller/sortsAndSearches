@@ -577,10 +577,11 @@ function makeDataBar(arr) {
     }
 }
 
-function reset(ar) {
+function reset() {
     currentSortStatus = "reset";
+    bubbleCounter = 0;
     for (var i = 0; i < dataBars.length; i++) {
-        var barHeight = ((250 * ar[i]) / maxnum).toString() + "px";
+        var barHeight = ((250 * unsortedArr[i]) / maxnum).toString() + "px";
 
         dataBars[i].css("height", barHeight);
     }
@@ -591,7 +592,7 @@ function reset(ar) {
 $("#reset").on("click", function() {
     clearTimeout(currentTimeOut);
     // console.log(unsortedArr);
-    reset(unsortedArr);
+    reset();
 });
 
 function pause() {
