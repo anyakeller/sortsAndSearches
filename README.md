@@ -1,6 +1,4 @@
-# sortsAndSearches
-Visualization of sorts and searches with JS
+# burger
+Columbia CS Bootcamp Homework using node and handlebars
 
-TODO:
-- implement other sort algos, not just bubble sort
-- Create runtime display
+Uh oh i forgot to gitignore node_modules
