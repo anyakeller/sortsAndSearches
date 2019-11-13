@@ -1,0 +1,158 @@
+<div class="jumbotron jumbotron-fluid mb-4 py-2">
+  <div class="container">
+    <h1 class="display-4">Sorts and Searches Visualizer</h1>
+    <p class="lead">
+      Instructions: Click button to choose sort algorithm
+    </p>
+  </div>
+</div>
+<div id="content" class="container-fluid  px-auto mb-3 shadow-lg">
+  <div class="row ">
+    <div class="mx-auto mt-4">
+      <div class="col-12">
+        <h4 class="text-center">Sort Options</h4>
+        <div
+          class="btn-group btn-group-toggle sortOptnsRadio"
+          data-toggle="buttons"
+        >
+          <!-- bubblesort -->
+          <label
+            class="btn btn-secondary active sortOptionBtn sortOptnActive"
+            data-sort="bubbleSort"
+          >
+            <input
+              type="radio"
+              name="sortOptns"
+              id="bubbleSort"
+              autocomplete="off"
+              checked
+              class="sortOptions"
+            />
+            Bubble Sort
+          </label>
+          <!-- quicksort -->
+          <label class="btn btn-secondary sortOptionBtn" data-sort="quickSort">
+            <input
+              type="radio"
+              name="sortOptns"
+              id="quickSort"
+              autocomplete="off"
+              class="sortOptions"
+            />
+            Quick Sort
+          </label>
+          <!-- Fart sort -->
+          <label class="btn btn-secondary sortOptionBtn" data-sort="fartSort">
+            <input
+              type="radio"
+              name="sortOptns"
+              id="fartSort"
+              autocomplete="off"
+              class="sortOptions"
+            />
+            Fart Sort
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- QuickSortOptions -->
+  <div class="row">
+    <div class="mx-auto" id="quickSortOptionsToggle" style="display: none">
+      <div class="col-12">
+        <label
+          ><p class="text-center">
+            Quick Sort Options
+          </p></label
+        >
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <!-- First Index Pivot -->
+          <label
+            class="btn btn-secondary btn-sm btn-info active quickSortOptionBtn"
+            data-sort="quickSortFirst"
+          >
+            <input
+              type="radio"
+              name="quickSortFirst"
+              id="quickSortFirst"
+              autocomplete="off"
+              checked
+              class="quickSortOptions quickSortOptionActive"
+            />
+            First Index Pivot
+          </label>
+          <!-- Last Index Pivot -->
+          <label
+            class="btn btn-secondary btn-sm btn-info quickSortOptionBtn"
+            data-sort="quickSortLast"
+          >
+            <input
+              type="radio"
+              name="quickSortLast"
+              id="quickSortLast"
+              autocomplete="off"
+              class="quickSortOptions"
+            />
+            Last Index Pivot
+          </label>
+          <!-- Random Index Pivot -->
+          <label
+            class="btn btn-secondary btn-sm btn-info quickSortOptionBtn"
+            data-sort="quickSortRandom"
+          >
+            <input
+              type="radio"
+              name="quickSortRandom"
+              id="quickSortRandom"
+              autocomplete="off"
+              class="quickSortOptions"
+            />
+            Random Index Pivot
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Sort Controls -->
+  <div class="row">
+    <div class="mx-auto my-4">
+      <label><h4 class="text-center">Animation Controls</h4></label>
+      <button type="button" class="btn btn-success" id="beginSort">
+        Begin Sort Animation
+      </button>
+      <button type="button" class="btn btn-warning" id="pause">
+        Pause
+      </button>
+      <button type="button" class="btn btn-danger" id="reset">
+        Stop and Reset
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 text-center">
+      <h2><span id="arrayStatus"></span></h2>
+      <h3><span id="algoChosen"></span></h3>
+    </div>
+  </div>
+  <div class="row py-4">
+    <div class="col-12">
+      <div class="visualization"></div>
+    </div>
+  </div>
+</div>
+
+<!-- script -->
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+  crossorigin="anonymous"
+></script>
+<script type="module" src="js/index.js"></script>
+<!-- <script type="text/javascript" src="js/paperCanvas.js"></script> -->
+<script>
+</script>
