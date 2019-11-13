@@ -526,9 +526,8 @@ var arraySortInProgress = unsortedArr.slice(0);
 var maxnum = Math.max(...unsortedArr);
 
 //curent sort obj
-var currentsortobj = {bubbleSort: null};
+var currentsortobj = {bubbleSort: null, quickSortFirst: null, quickSortLast: null,quickSortRandom:null};
 var currentsortobjkey = 'bubbleSort';
-var currentquicksortkey = 'first';
 
 //create a data bar element function
 function makeDataBar(arr) {
@@ -560,7 +559,7 @@ function reset() {
   if (currentsortobj[currentsortobjkey] != null)
     currentsortobj[currentsortobjkey].reset();
   console.log('resetting');
-	console.log(unsortedArr);
+  console.log(unsortedArr);
   for (var i = 0; i < dataBars.length; i++) {
     var barHeight = ((250 * unsortedArr[i]) / maxnum).toString() + 'px';
     dataBars[i].css('height', barHeight);
@@ -594,10 +593,8 @@ function windowResizeBarWidth(arr) {
 }
 
 $('.sortOptionBtn').on('click', function() {
-  if (currentTimeOut) {
-    clearTimeout(currentTimeOut);
-  }
-  var previousActiveSortChoice = $('.sortOptnActive');
+  reset();
+	var previousActiveSortChoice = $('.sortOptnActive');
   previousActiveSortChoice.removeClass('sortOptnActive');
   var activeSortChoice = $(this);
   activeSortChoice.addClass('sortOptnActive');
@@ -617,14 +614,11 @@ $('.sortOptionBtn').on('click', function() {
 });
 
 $('.quickSortOptionBtn').on('click', function() {
-  if (currentTimeOut) {
-    clearTimeout(currentTimeOut);
-  }
   var prevActiveQuickChoice = $('.quickSortOptionActive');
   prevActiveQuickChoice.removeClass('quickSortOptionActive');
   var activeQuickChoice = $(this);
   activeQuickChoice.addClass('quickSortOptionActive');
-  sortChosen = activeQuickChoice.attr('data-sort');
+  var sortChosen = activeQuickChoice.attr('data-sort');
   sortStatus(sortStatusElement, sortChosen, ' ready');
 });
 
@@ -646,8 +640,6 @@ beginSort.on('click', function() {
         swapBars
       );
 
-      currentsortobj[currentsortobjkey].start();
-
       // console.log(sorted);
     } else if (sortChosen === 'quickSort') {
       //show quick sort options
@@ -656,9 +648,8 @@ beginSort.on('click', function() {
     } else if (sortChosen === 'fartSort') {
       console.log('fart Begin');
     }
-  } else {
-    currentsortobj[currentsortobjkey].start();
   }
+  currentsortobj[currentsortobjkey].start();
 });
 
 $(document).ready(function() {
