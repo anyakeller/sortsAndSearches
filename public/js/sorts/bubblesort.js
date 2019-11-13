@@ -9,32 +9,42 @@ class BubbleSort extends SortClass {
   }
 
   pause() {
-    clearTimeout(this.currentTimeOut);
+    if (this.currentTimeOut != null) {
+      clearTimeout(this.currentTimeOut);
+    }
     this.currentTimeOut = null;
-    this.pause = true;
+    this.ispause = true;
   }
 
   reset() {
     if (this.currentTimeOut != null) {
+			console.log("woah");
       clearTimeout(this.currentTimeOut);
-      this.currentTimeOut = null;
     }
     this.issort = false;
     this.currentar = this.ar;
     this.bubbleCounter = 0;
     this.currentTimeOut = null;
-    this.pause = true;
+    this.ispause = true;
+    this.isreset = true;
   }
 
+  start() {
+    if (this.ispause) this.ispause = false;
+    if (this.isreset) this.isreset = false;
+		this.doSort();
+	}
+
   doSort() {
-    this.pause = false;
-    //recursive method
-    if (this.issort) {
-      this.sortStatus = true;
-      console.log(this.currentar);
-      return this.currentar;
-    } else {
-      this.currentTimeOut = setTimeout(this.halp(this), 1);
+    if (!this.ispause && this.reset) {
+      //recursive method
+      if (this.issort) {
+        this.sortStatus = true;
+        console.log(this.currentar);
+        return this.currentar;
+      } else {
+        this.currentTimeOut = setTimeout(this.halp(this), 1);
+      }
     }
   }
 
@@ -44,10 +54,7 @@ class BubbleSort extends SortClass {
       whome.currentTimeOut = null;
       var isit = true;
       var prevnum = whome.currentar[whome.bubbleCounter];
-      console.log('nums');
-      console.log(prevnum);
       var nextnum = whome.currentar[whome.bubbleCounter + 1];
-      console.log(nextnum);
       if (prevnum > nextnum) {
         whome.currentar[whome.bubbleCounter] = nextnum;
         whome.currentar[whome.bubbleCounter + 1] = prevnum;
@@ -70,11 +77,10 @@ class BubbleSort extends SortClass {
       } else if (whome.bubbleCounter < whome.arleng - 1) {
         whome.bubbleCounter++;
         whome.doSort();
-      }else if(whome.bubbleCounter == whome.arleng -1){
-				whome.bubbleCounter = 0;
-				whome.doSort();
-			}
-			else {
+      } else if (whome.bubbleCounter == whome.arleng - 1) {
+        whome.bubbleCounter = 0;
+        whome.doSort();
+      } else {
         whome.issort = true;
         whome.doSort();
       }

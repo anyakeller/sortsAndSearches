@@ -525,7 +525,9 @@ var arraySortInProgress = unsortedArr.slice(0);
 var maxnum = Math.max(...unsortedArr);
 
 //curent sort obj
-var currentsortobj = null;
+var currentsortobj = {bubbleSort: null};
+var currentsortobjkey = 'bubbleSort';
+var currentquicksortkey = 'first';
 
 //create a data bar element function
 function makeDataBar(arr) {
@@ -554,31 +556,29 @@ function makeDataBar(arr) {
 }
 
 function reset() {
-  if (currentsortobj != null) currentsortobj.reset();
-  currentSortStatus = 'reset';
+  if (currentsortobj[currentsortobjkey] != null)
+    currentsortobj[currentsortobjkey].reset();
+  console.log('resetting');
   for (var i = 0; i < dataBars.length; i++) {
     var barHeight = ((250 * unsortedArr[i]) / maxnum).toString() + 'px';
-
     dataBars[i].css('height', barHeight);
   }
   arraySortInProgress = unsortedArr.slice(0);
-  currentTimeOut = null;
-  sortStatus(sortStatusElement, currentSort, currentSortStatus);
+  sortStatus(sortStatusElement, currentSort, 'reset');
 }
 $('#reset').on('click', function() {
-  currentsortobj.reset();
   // console.log(unsortedArr);
   reset();
 });
 
 function pause() {
-  if (currentSortStatus !== 'reset') {
-    currentSortStatus = 'paused';
-    sortStatus(sortStatusElement, currentSort, currentSortStatus);
-  }
+  if (currentsortobj[currentsortobjkey] != null)
+		console.log(currentsortobj[currentsortobjkey]);
+    currentsortobj[currentsortobjkey].pause();
+  sortStatus(sortStatusElement, currentSort, 'paused');
 }
 $('#pause').on('click', function() {
-  currentsortobj.pause();
+  pause();
 });
 
 //resize bars on screen resize function
@@ -609,6 +609,7 @@ $('.sortOptionBtn').on('click', function() {
   } else {
     quickSortOptionsToggle.hide();
   }
+  currentsortobjkey = currentSort;
   sortStatus(sortStatusElement, sortChosen, ' ready');
   console.log(sortChosen);
 });
@@ -629,26 +630,32 @@ $('.quickSortOptionBtn').on('click', function() {
 beginSort.on('click', function() {
   var activeSortChoice = $('.sortOptnActive');
   var sortChosen = activeSortChoice.attr('data-sort');
+  currentsortobjkey = sortChosen;
   var sorted;
-  if (sortChosen === 'bubbleSort') {
-    console.log('bubbleSort Begin');
-    sortStatus(sortStatusElement, sortChosen, 'in progress');
-    currentsortobj = new BubbleSort(
-      unsortedArr,
-      maxnum,
-      dataBars,
-      resizeBarHeight,
-      swapBars
-    );
-		currentsortobj.doSort();
+  if (currentsortobj[currentsortobjkey] == null) {
+    if (sortChosen === 'bubbleSort') {
+      console.log('bubbleSort Begin');
+      sortStatus(sortStatusElement, sortChosen, 'in progress');
+      currentsortobj[currentsortobjkey] = new BubbleSort(
+        unsortedArr,
+        maxnum,
+        dataBars,
+        resizeBarHeight,
+        swapBars
+      );
 
-    // console.log(sorted);
-  } else if (sortChosen === 'quickSort') {
-    //show quick sort options
-    console.log('quicksort Begin');
-    quickSort(arraySortInProgress, dataBars, false, false);
-  } else if (sortChosen === 'fartSort') {
-    console.log('fart Begin');
+      currentsortobj[currentsortobjkey].start();
+
+      // console.log(sorted);
+    } else if (sortChosen === 'quickSort') {
+      //show quick sort options
+      console.log('quicksort Begin');
+      quickSort(arraySortInProgress, dataBars, false, false);
+    } else if (sortChosen === 'fartSort') {
+      console.log('fart Begin');
+    }
+  } else {
+    currentsortobj[currentsortobjkey].start();
   }
 });
 

@@ -7,7 +7,8 @@ export default class SortClass{
 		this.maxNum = maxNum;
 		this.arleng = ar.length;
 		this.sortStatus = false;
-		this.pause= true;
+		this.ispause= true;
+		this.isreset = true;
 	}
 }
 
