@@ -6,7 +6,6 @@ class BubbleSort extends SortClass {
     this.currentar = this.ar;
     this.bubbleCounter = 0;
     this.currentTimeOut = null;
-    console.log(this);
   }
 
   pause() {
@@ -35,37 +34,50 @@ class BubbleSort extends SortClass {
       console.log(this.currentar);
       return this.currentar;
     } else {
-      this.currentTimeOut = setTimeout(this.halp(this), 10);
+      this.currentTimeOut = setTimeout(this.halp(this), 1);
     }
   }
 
   halp(whome) {
-    clearTimeout(whome.currentTimeOut);
     function ohno() {
-      var prevnum = whome.currentar[whome.bubbleCounter];
+      clearTimeout(whome.currentTimeOut);
+      whome.currentTimeOut = null;
       var isit = true;
-      if (prevnum > whome.currentar[whome.bubbleCounter + 1]) {
-        isit = false;
-        whome.currentar[whome.bubbleCounter] =
-          whome.currentar[whome.bubbleCounter + 1];
+      var prevnum = whome.currentar[whome.bubbleCounter];
+      console.log('nums');
+      console.log(prevnum);
+      var nextnum = whome.currentar[whome.bubbleCounter + 1];
+      console.log(nextnum);
+      if (prevnum > nextnum) {
+        whome.currentar[whome.bubbleCounter] = nextnum;
         whome.currentar[whome.bubbleCounter + 1] = prevnum;
 
         whome
           .swapBars(
             whome.data[whome.bubbleCounter],
-            whome.currentar[whome.bubbleCounter],
+            nextnum,
             whome.data[whome.bubbleCounter + 1],
-            whome.currentar[whome.bubbleCounter + 1],
+            prevnum,
             whome.maxNum
           )
           .then(function(asdf) {
+            console.log(whome.bubbleCounter);
             if (whome.bubbleCounter == whome.arleng - 1)
               whome.bubbleCounter = 0;
-            else whome.bubbleCounter++;
+            else whome.bubbleCounter = whome.bubbleCounter + 1;
             whome.doSort();
           });
+      } else if (whome.bubbleCounter < whome.arleng - 1) {
+        whome.bubbleCounter++;
+        whome.doSort();
+      }else if(whome.bubbleCounter == whome.arleng -1){
+				whome.bubbleCounter = 0;
+				whome.doSort();
+			}
+			else {
+        whome.issort = true;
+        whome.doSort();
       }
-      whome.issort = isit;
     }
     return ohno;
   }
