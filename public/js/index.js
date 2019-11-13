@@ -504,6 +504,7 @@ var unsortedArr = [
   104,
   249
 ];
+var unsortedArrCopy = unsortedArr.slice(0);
 
 //GLOBAL HTML ELEMENTS
 var sortStatusElement = $('#arrayStatus'); //status of array sorting
@@ -559,6 +560,7 @@ function reset() {
   if (currentsortobj[currentsortobjkey] != null)
     currentsortobj[currentsortobjkey].reset();
   console.log('resetting');
+	console.log(unsortedArr);
   for (var i = 0; i < dataBars.length; i++) {
     var barHeight = ((250 * unsortedArr[i]) / maxnum).toString() + 'px';
     dataBars[i].css('height', barHeight);
@@ -573,8 +575,8 @@ $('#reset').on('click', function() {
 
 function pause() {
   if (currentsortobj[currentsortobjkey] != null)
-		console.log(currentsortobj[currentsortobjkey]);
-    currentsortobj[currentsortobjkey].pause();
+    console.log(currentsortobj[currentsortobjkey]);
+  currentsortobj[currentsortobjkey].pause();
   sortStatus(sortStatusElement, currentSort, 'paused');
 }
 $('#pause').on('click', function() {
@@ -637,7 +639,7 @@ beginSort.on('click', function() {
       console.log('bubbleSort Begin');
       sortStatus(sortStatusElement, sortChosen, 'in progress');
       currentsortobj[currentsortobjkey] = new BubbleSort(
-        unsortedArr,
+        unsortedArrCopy,
         maxnum,
         dataBars,
         resizeBarHeight,
