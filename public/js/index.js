@@ -1,4 +1,5 @@
-import BubbleSort from "./sorts/bubblesort.js";
+import BubbleSort from './sorts/bubblesort.js';
+import {resizeBarHeight, swapBars, sortStatus} from './resizeBars.js';
 
 //the initial unsorted array
 var unsortedArr = [
@@ -504,9 +505,8 @@ var unsortedArr = [
   249
 ];
 
-
 //GLOBAL HTML ELEMENTS
-var arrayStatus = $('#arrayStatus'); //status of array sorting
+var sortStatusElement = $('#arrayStatus'); //status of array sorting
 var algoChosen = $('#algoChosen'); //which algo
 var visualization = $('.visualization'); //the visual area
 var sortOptionBtn = $('.sortOptionBtn'); //the radio toggle for the algo chosen
@@ -519,10 +519,13 @@ var currentSort = 'bubbleSort'; //the current sort
 var dataBars = []; //the actual data bar elements
 
 // initialize setup
-arrayStatus.text('INITIAL UNSORTED ARRAY');
+sortStatusElement.text('INITIAL UNSORTED ARRAY');
 
 var arraySortInProgress = unsortedArr.slice(0);
 var maxnum = Math.max(...unsortedArr);
+
+//curent sort obj
+var currentsortobj = null;
 
 //create a data bar element function
 function makeDataBar(arr) {
@@ -551,8 +554,8 @@ function makeDataBar(arr) {
 }
 
 function reset() {
+  if (currentsortobj != null) currentsortobj.reset();
   currentSortStatus = 'reset';
-  bubbleCounter = 0;
   for (var i = 0; i < dataBars.length; i++) {
     var barHeight = ((250 * unsortedArr[i]) / maxnum).toString() + 'px';
 
@@ -560,10 +563,10 @@ function reset() {
   }
   arraySortInProgress = unsortedArr.slice(0);
   currentTimeOut = null;
-  sortStatus(currentSort, currentSortStatus);
+  sortStatus(sortStatusElement, currentSort, currentSortStatus);
 }
 $('#reset').on('click', function() {
-  clearTimeout(currentTimeOut);
+  currentsortobj.reset();
   // console.log(unsortedArr);
   reset();
 });
@@ -571,12 +574,11 @@ $('#reset').on('click', function() {
 function pause() {
   if (currentSortStatus !== 'reset') {
     currentSortStatus = 'paused';
-    sortStatus(currentSort, currentSortStatus);
+    sortStatus(sortStatusElement, currentSort, currentSortStatus);
   }
 }
 $('#pause').on('click', function() {
-  clearTimeout(currentTimeOut);
-  pause();
+  currentsortobj.pause();
 });
 
 //resize bars on screen resize function
@@ -607,7 +609,7 @@ $('.sortOptionBtn').on('click', function() {
   } else {
     quickSortOptionsToggle.hide();
   }
-  sortStatus(sortChosen, ' ready');
+  sortStatus(sortStatusElement, sortChosen, ' ready');
   console.log(sortChosen);
 });
 
@@ -620,7 +622,7 @@ $('.quickSortOptionBtn').on('click', function() {
   var activeQuickChoice = $(this);
   activeQuickChoice.addClass('quickSortOptionActive');
   sortChosen = activeQuickChoice.attr('data-sort');
-  sortStatus(sortChosen, ' ready');
+  sortStatus(sortStatusElement, sortChosen, ' ready');
 });
 
 //beginSort onclick
@@ -630,8 +632,16 @@ beginSort.on('click', function() {
   var sorted;
   if (sortChosen === 'bubbleSort') {
     console.log('bubbleSort Begin');
-    sortStatus(sortChosen, 'in progress');
-    sorted = bubbleSort(arraySortInProgress, dataBars);
+    sortStatus(sortStatusElement, sortChosen, 'in progress');
+    currentsortobj = new BubbleSort(
+      unsortedArr,
+      maxnum,
+      dataBars,
+      resizeBarHeight,
+      swapBars
+    );
+		currentsortobj.doSort();
+
     // console.log(sorted);
   } else if (sortChosen === 'quickSort') {
     //show quick sort options
