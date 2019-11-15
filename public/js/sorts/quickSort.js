@@ -27,11 +27,11 @@ class QuickSort extends SortClass {
     switch (this.pivotOptn) {
       case 'quickSortFirst':
         console.log(this.currentar);
-        console.log(this.quickSortLast(this.currentar));
+        console.log(this.quickSortLast(this.currentar, this.data));
         break;
       case 'quickSortLast':
         console.log(this.currentar);
-        console.log(this.quickSortLast(this.currentar));
+        console.log(this.quickSortLast(this.currentar, this.data));
         break;
       case 'quickSortRandom':
         this.quickSortRandom();
@@ -39,11 +39,11 @@ class QuickSort extends SortClass {
   }
 
   //quick sort at first pivot
-  quickSortLast(arr) {
-    console.log('current ar');
-    console.log(arr);
-
-    if (arr.length <= 1) return arr;
+  quickSortLast(arr, dataSection) {
+    if (arr.length <= 1) {
+			if (arr.length == 1) this.resizeBarHeight(dataSection[0],arr[0],this.maxNum);
+			return arr;
+		}
     else {
       var pivotValue = arr[arr.length - 1];
       var i = -1;
@@ -57,19 +57,27 @@ class QuickSort extends SortClass {
           var temp = arr[i];
           arr[i] = arr[compareIndex];
           arr[compareIndex] = temp;
-          console.log('swap1');
-          console.log(arr);
+          this.swapBars(
+            dataSection[i],
+            arr[compareIndex],
+            dataSection[compareIndex],
+            temp,this.maxNum
+          );
         }
       }
       var temp = arr[i + 1];
       arr[i + 1] = arr[arr.length - 1];
       arr[arr.length - 1] = temp;
-      console.log('swap2');
-      console.log(arr);
+      this.swapBars(
+        dataSection[i +1],
+        arr[i+1],
+        dataSection[arr.length-1],
+        temp,this.maxNum
+      );
 
-      var ans = this.quickSortLast(arr.slice(0, i + 1));
+      var ans = this.quickSortLast(arr.slice(0, i + 1),dataSection.slice(0,i+1));
       ans.push(arr[i + 1]);
-      return ans.concat(this.quickSortLast(arr.slice(i + 2, arr.length)));
+      return ans.concat(this.quickSortLast(arr.slice(i + 2, arr.length),dataSection.slice(i+2,arr.length)));
     }
   }
   quickSortFirst() {}
