@@ -2,15 +2,16 @@ import BubbleSort from './sorts/bubblesort.js';
 import {resizeBarHeight, swapBars, sortStatus} from './resizeBars.js';
 
 //the initial unsorted array
-function createRandomArray(leng){
-	var array = [];
-	for (var i = 1; i < leng +1;i++){
-		array.push(i);
-	}
-	var currentIndex = array.length, temporaryValue, randomIndex;
+function createRandomArray(leng) {
+  var array = [];
+  for (var i = 1; i < leng + 1; i++) {
+    array.push(i);
+  }
+  var currentIndex = array.length,
+    temporaryValue,
+    randomIndex;
 
   while (0 !== currentIndex) {
-
     // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
@@ -20,10 +21,9 @@ function createRandomArray(leng){
     array[currentIndex] = array[randomIndex];
     array[randomIndex] = temporaryValue;
   }
-	return array;
+  return array;
 }
-var unsortedArr = createRandomArray(200);
-var unsortedArrCopy = unsortedArr.slice(0);
+var unsortedArr, arraySortInProgress, maxnum;
 
 //GLOBAL HTML ELEMENTS
 var sortStatusElement = $('#arrayStatus'); //status of array sorting
@@ -36,23 +36,25 @@ var quickSortOptn = 'quickSortFirst';
 var currentSort = 'bubbleSort'; //the current sort
 
 //GLOBAL CREATED HTML ELEMENTS
-var dataBars = []; //the actual data bar elements
+var dataBars; //the actual data bar elements
 
 // initialize setup
 sortStatusElement.text('INITIAL UNSORTED ARRAY');
 
-var arraySortInProgress = unsortedArr.slice(0);
-var maxnum = Math.max(...unsortedArr);
-
 //curent sort obj
-var currentsortobj = {bubbleSort: null, quickSortFirst: null, quickSortLast: null,quickSortRandom:null};
+var currentsortobj = {
+  bubbleSort: null,
+  quickSortFirst: null,
+  quickSortLast: null,
+  quickSortRandom: null
+};
 var currentsortobjkey = 'bubbleSort';
 
 //create a data bar element function
 function makeDataBar(arr) {
   //calculate bar width to fit page
   var barWidth = (visualization.width() / arr.length).toString() + 'px';
-
+  dataBars = [];
   //loop through array
   for (var i = 0; i < arr.length; i++) {
     //create bar element
@@ -75,15 +77,16 @@ function makeDataBar(arr) {
 }
 
 function reset() {
-  if (currentsortobj[currentsortobjkey] != null)
-    currentsortobj[currentsortobjkey].reset();
+  $('.visualization').empty();
   console.log('resetting');
-  console.log(unsortedArr);
-  for (var i = 0; i < dataBars.length; i++) {
-    var barHeight = ((250 * unsortedArr[i]) / maxnum).toString() + 'px';
-    dataBars[i].css('height', barHeight);
+  if (currentsortobj[currentsortobjkey] != null) {
+    currentsortobj[currentsortobjkey].reset();
   }
+  currentsortobj[currentsortobjkey] = null;
+
+  makeDataBar(unsortedArr);
   arraySortInProgress = unsortedArr.slice(0);
+
   sortStatus(sortStatusElement, currentSort, 'reset');
 }
 $('#reset').on('click', function() {
@@ -113,12 +116,11 @@ function windowResizeBarWidth(arr) {
 
 $('.sortOptionBtn').on('click', function() {
   reset();
-	var previousActiveSortChoice = $('.sortOptnActive');
+  var previousActiveSortChoice = $('.sortOptnActive');
   previousActiveSortChoice.removeClass('sortOptnActive');
   var activeSortChoice = $(this);
   activeSortChoice.addClass('sortOptnActive');
   var sortChosen = activeSortChoice.attr('data-sort');
-  currentSort = sortChosen;
   if (sortChosen === 'quickSort') {
     quickSortOptionsToggle.show();
     var activeQuickChoice = $('.quickSortOptionActive');
@@ -152,7 +154,7 @@ beginSort.on('click', function() {
       console.log('bubbleSort Begin');
       sortStatus(sortStatusElement, sortChosen, 'in progress');
       currentsortobj[currentsortobjkey] = new BubbleSort(
-        unsortedArrCopy,
+        arraySortInProgress,
         maxnum,
         dataBars,
         resizeBarHeight,
@@ -172,5 +174,9 @@ beginSort.on('click', function() {
 });
 
 $(document).ready(function() {
-  makeDataBar(unsortedArr);
+  unsortedArr = createRandomArray(200);
+  arraySortInProgress = unsortedArr.slice(0);
+  maxnum = Math.max(...unsortedArr);
+
+  reset();
 });

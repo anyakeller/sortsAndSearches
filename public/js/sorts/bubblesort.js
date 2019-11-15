@@ -17,16 +17,7 @@ class BubbleSort extends SortClass {
   }
 
   reset() {
-    if (this.currentTimeOut != null) {
-			console.log("woah");
-      clearTimeout(this.currentTimeOut);
-    }
-    this.issort = false;
-    this.currentar = this.ar;
-    this.bubbleCounter = 0;
-    this.currentTimeOut = null;
-    this.ispause = true;
-    this.isreset = true;
+		this.pause();
   }
 
   start() {
