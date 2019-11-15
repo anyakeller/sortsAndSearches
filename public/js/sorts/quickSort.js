@@ -27,24 +27,23 @@ class QuickSort extends SortClass {
     switch (this.pivotOptn) {
       case 'quickSortFirst':
         console.log(this.currentar);
-        console.log(this.quickSortLast(this.currentar, this.data));
+        this.quickSortLast(this.currentar, this.data).then(ans => {
+          console.log(ans);
+        });
         break;
       case 'quickSortLast':
         console.log(this.currentar);
-        console.log(this.quickSortLast(this.currentar, this.data));
+        this.quickSortLast(this.currentar, this.data).then(ans => {
+          console.log(ans);
+        });
         break;
       case 'quickSortRandom':
         this.quickSortRandom();
     }
   }
 
-  //quick sort at first pivot
-  quickSortLast(arr, dataSection) {
-    if (arr.length <= 1) {
-			if (arr.length == 1) this.resizeBarHeight(dataSection[0],arr[0],this.maxNum);
-			return arr;
-		}
-    else {
+  innerForLoop(arr, maxNum, dataSection) {
+    return new Promise(res => {
       var pivotValue = arr[arr.length - 1];
       var i = -1;
       for (
@@ -61,24 +60,53 @@ class QuickSort extends SortClass {
             dataSection[i],
             arr[compareIndex],
             dataSection[compareIndex],
-            temp,this.maxNum
+            temp,
+            maxNum
           );
         }
       }
-      var temp = arr[i + 1];
-      arr[i + 1] = arr[arr.length - 1];
-      arr[arr.length - 1] = temp;
-      this.swapBars(
-        dataSection[i +1],
-        arr[i+1],
-        dataSection[arr.length-1],
-        temp,this.maxNum
-      );
+      res({arr: arr, dataSection: dataSection, i: i});
+    });
+  }
 
-      var ans = this.quickSortLast(arr.slice(0, i + 1),dataSection.slice(0,i+1));
-      ans.push(arr[i + 1]);
-      return ans.concat(this.quickSortLast(arr.slice(i + 2, arr.length),dataSection.slice(i+2,arr.length)));
-    }
+  //quick sort at first pivot
+  quickSortLast(arr, dataSection) {
+    return new Promise(res => {
+      if (arr.length <= 1) {
+        if (arr.length == 1)
+          this.resizeBarHeight(dataSection[0], arr[0], this.maxNum);
+        res(arr);
+      } else {
+        this.innerForLoop(arr, this.maxNum, dataSection).then(result => {
+          arr = result.arr;
+          dataSection = result.dataSection;
+          var i = result.i;
+          var temp = arr[i + 1];
+          arr[i + 1] = arr[arr.length - 1];
+          arr[arr.length - 1] = temp;
+          this.swapBars(
+            dataSection[i + 1],
+            arr[i + 1],
+            dataSection[arr.length - 1],
+            temp,
+            this.maxNum
+          );
+
+          this.quickSortLast(
+            arr.slice(0, i + 1),
+            dataSection.slice(0, i + 1)
+          ).then(ans => {
+            ans.push(arr[i + 1]);
+            this.quickSortLast(
+              arr.slice(i + 2, arr.length),
+              dataSection.slice(i + 2, arr.length)
+            ).then(newAns => {
+              res(ans.concat(newAns));
+            });
+          });
+        });
+      }
+    });
   }
   quickSortFirst() {}
   quickSortRandom() {}
