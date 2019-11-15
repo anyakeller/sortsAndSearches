@@ -1,4 +1,5 @@
 import BubbleSort from './sorts/bubblesort.js';
+import QuickSort from './sorts/quickSort.js';
 import {resizeBarHeight, swapBars, sortStatus} from './resizeBars.js';
 
 //the initial unsorted array
@@ -32,7 +33,6 @@ var visualization = $('.visualization'); //the visual area
 var sortOptionBtn = $('.sortOptionBtn'); //the radio toggle for the algo chosen
 var beginSort = $('#beginSort'); //begin sort button
 var quickSortOptionsToggle = $('#quickSortOptionsToggle'); //toggle hide/show quicksort optns
-var quickSortOptn = 'quickSortFirst';
 var currentSort = 'bubbleSort'; //the current sort
 
 //GLOBAL CREATED HTML ELEMENTS
@@ -44,10 +44,9 @@ sortStatusElement.text('INITIAL UNSORTED ARRAY');
 //curent sort obj
 var currentsortobj = {
   bubbleSort: null,
-  quickSortFirst: null,
-  quickSortLast: null,
-  quickSortRandom: null
+  quickSort: null
 };
+var quickSortOptn = 'quickSortLast';
 var currentsortobjkey = 'bubbleSort';
 
 //create a data bar element function
@@ -130,8 +129,7 @@ $('.sortOptionBtn').on('click', function() {
     quickSortOptionsToggle.hide();
   }
   currentsortobjkey = currentSort;
-  sortStatus(sortStatusElement, sortChosen, ' ready');
-  console.log(sortChosen);
+  sortStatus(sortStatusElement, currentSort, ' ready');
 });
 
 $('.quickSortOptionBtn').on('click', function() {
@@ -164,8 +162,15 @@ beginSort.on('click', function() {
       // console.log(sorted);
     } else if (sortChosen === 'quickSort') {
       //show quick sort options
-      console.log('quicksort Begin');
-      quickSort(arraySortInProgress, dataBars, false, false);
+      console.log(currentsortobjkey + ' begin');
+      currentsortobj[currentsortobjkey] = new QuickSort(
+        arraySortInProgress,
+        maxnum,
+        dataBars,
+        resizeBarHeight,
+        swapBars,
+        quickSortOptn
+      );
     } else if (sortChosen === 'fartSort') {
       console.log('fart Begin');
     }
@@ -174,7 +179,7 @@ beginSort.on('click', function() {
 });
 
 $(document).ready(function() {
-  unsortedArr = createRandomArray(200);
+  unsortedArr = createRandomArray(20);
   arraySortInProgress = unsortedArr.slice(0);
   maxnum = Math.max(...unsortedArr);
 
