@@ -1,6 +1,6 @@
 import BubbleSort from './sorts/bubblesort.js';
 import QuickSort from './sorts/quickSort.js';
-import {resizeBarHeight, swapBars, sortStatus} from './resizeBars.js';
+import {resizeBarHeight, swapBars, timeOutThingResize,timeOutThingSwap,sortStatus} from './resizeBars.js';
 
 //the initial unsorted array
 function createRandomArray(leng) {
@@ -156,7 +156,9 @@ beginSort.on('click', function() {
         maxnum,
         dataBars,
         resizeBarHeight,
-        swapBars
+        swapBars,
+				timeOutThingResize,
+				timeOutThingSwap
       );
 
       // console.log(sorted);

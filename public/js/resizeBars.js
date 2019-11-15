@@ -8,6 +8,18 @@ function resizeBarHeight(barElement, newvalue, maxnum) {
   });
 }
 
+function timeOutThingResize(barElement, newvalue, maxnum) {
+  var timeoutvalue;
+  var toomanypromises = new Promise(toomany => {
+    timeoutvalue = setTimeout(function() {
+      resizeBarHeight(barElement, newvalue, maxnum).then(resolved => {
+        toomany('yeet');
+      });
+    }, 10);
+  });
+  return {timeoutvalue: timeoutvalue, toomanypromises: toomanypromises};
+}
+
 function swapBars(barElement1, newvalue1, barElement2, newvalue2, maxnum) {
   return new Promise(res => {
     var newBarHeight1 = ((250 * newvalue1) / maxnum).toString() + 'px';
@@ -17,13 +29,34 @@ function swapBars(barElement1, newvalue1, barElement2, newvalue2, maxnum) {
     res(true);
   });
 }
+function timeOutThingSwap(
+  barElement1,
+  newvalue1,
+  barElement2,
+  newvalue2,
+  maxnum
+) {
+  var timeoutvalue;
+  var toomanypromises = new Promise(toomany => {
+    timeoutvalue = setTimeout(function() {
+      swapBars(barElement1, newvalue1, barElement2, newvalue2, maxnum).then(
+        resolved => {
+          toomany('yeet');
+        }
+      );
+    }, 10);
+  });
+  return {timeoutvalue: timeoutvalue, toomanypromises: toomanypromises};
+}
 
-function sortStatus(arrayStatus,algoName, status) {
+function sortStatus(arrayStatus, algoName, status) {
   arrayStatus.text(algoName + ' ' + status);
 }
 
 export {
   resizeBarHeight,
   swapBars,
+  timeOutThingResize,
+  timeOutThingSwap,
   sortStatus
 };
