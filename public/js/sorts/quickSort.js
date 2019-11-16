@@ -50,23 +50,36 @@ class QuickSort extends SortClass {
           var temp = arr[i];
           arr[i] = arr[compareIndex];
           arr[compareIndex] = temp;
-          this.dataBarUtils.swapBars(
+          var ohgodno = this.dataBarUtils.swapBarsTimeout(
             dataSection[i],
             arr[compareIndex],
             dataSection[compareIndex],
             temp,
             this.maxNum
           );
+          this.currentTimeOut = ohgodno.timeoutvalue;
+          ohgodno.toomanypromises.then(yeet => {
+            this.stupidSwapThing(
+              pivotValue,
+              i,
+              compareIndex + 1,
+              arr,
+              dataSection
+            ).then(stupidResults => {
+              res(stupidResults);
+            });
+          });
+        } else {
+          this.stupidSwapThing(
+            pivotValue,
+            i,
+            compareIndex + 1,
+            arr,
+            dataSection
+          ).then(stupidResults => {
+            res(stupidResults);
+          });
         }
-        this.stupidSwapThing(
-          pivotValue,
-          i,
-          compareIndex + 1,
-          arr,
-          dataSection
-        ).then(stupidResults => {
-          res(stupidResults);
-        });
       } else {
         res({arr: arr, dataSection: dataSection, i: i});
       }
