@@ -1,5 +1,6 @@
 import BubbleSort from './sorts/bubblesort.js';
 import QuickSort from './sorts/quickSort.js';
+import MergeSort from './sorts/mergesort.js';
 import * as dataBarUtils from './resizeBars.js';
 
 //the initial unsorted array
@@ -44,7 +45,9 @@ sortStatusElement.text('INITIAL UNSORTED ARRAY');
 //curent sort obj
 var currentsortobj = {
   bubbleSort: null,
-  quickSort: null
+  quickSortFirst: null,
+	quickSortLast:null,
+	mergeSort:null,
 };
 var quickSortOptn = 'quickSortLast';
 var currentsortobjkey = 'bubbleSort';
@@ -124,12 +127,13 @@ $('.sortOptionBtn').on('click', function() {
     quickSortOptionsToggle.show();
     var activeQuickChoice = $('.quickSortOptionActive');
     quickSortOptn = activeQuickChoice.attr('data-sort');
-    currentSort = quickSortOptn;
+    sortChosen = quickSortOptn;
   } else {
     quickSortOptionsToggle.hide();
   }
-  currentsortobjkey = currentSort;
-  dataBarUtils.sortStatus(sortStatusElement, currentSort, ' ready');
+  currentsortobjkey = sortChosen;
+	currentSort = sortChosen;
+  dataBarUtils.sortStatus(sortStatusElement, sortChosen, ' ready');
 });
 
 $('.quickSortOptionBtn').on('click', function() {
@@ -169,7 +173,14 @@ beginSort.on('click', function() {
         dataBarUtils
       );
     } else if (sortChosen === 'fartSort') {
-      console.log('fart Begin');
+      console.log('this is actually merge sort');
+      dataBarUtils.sortStatus(sortStatusElement, sortChosen, 'in progress');
+      currentsortobj[currentsortobjkey] = new MergeSort(
+        arraySortInProgress,
+        maxnum,
+        dataBars,
+        dataBarUtils
+      );
     }
   }
   currentsortobj[currentsortobjkey].start();
