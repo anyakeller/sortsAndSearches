@@ -42,30 +42,33 @@ class QuickSort extends SortClass {
     }
   }
 
-  innerForLoop(arr, maxNum, dataSection) {
+  stupidSwapThing(pivotValue, i, compareIndex, arr, dataSection) {
+    if (compareIndex < arr.length - 1) {
+      if (arr[compareIndex] < pivotValue) {
+        i++;
+        var temp = arr[i];
+        arr[i] = arr[compareIndex];
+        arr[compareIndex] = temp;
+        this.dataBarUtils.swapBars(
+          dataSection[i],
+          arr[compareIndex],
+          dataSection[compareIndex],
+          temp,
+          this.maxNum
+        );
+      }
+      return this.stupidSwapThing(pivotValue, i, compareIndex + 1, arr, dataSection);
+    } else {
+      return {arr: arr, dataSection: dataSection, i: i};
+    }
+  }
+
+  innerForLoop(arr, dataSection) {
     return new Promise(res => {
       var pivotValue = arr[arr.length - 1];
       var i = -1;
-      for (
-        var compareIndex = 0;
-        compareIndex < arr.length - 1;
-        compareIndex++
-      ) {
-        if (arr[compareIndex] < pivotValue) {
-          i++;
-          var temp = arr[i];
-          arr[i] = arr[compareIndex];
-          arr[compareIndex] = temp;
-          this.dataBarUtils.swapBars(
-            dataSection[i],
-            arr[compareIndex],
-            dataSection[compareIndex],
-            temp,
-            maxNum
-          );
-        }
-      }
-      res({arr: arr, dataSection: dataSection, i: i});
+      var stupidResults = this.stupidSwapThing(pivotValue, i, 0, arr, dataSection);
+      res({arr: stupidResults.arr, dataSection: stupidResults.dataSection, i: stupidResults.i});
     });
   }
 
@@ -77,7 +80,7 @@ class QuickSort extends SortClass {
           this.dataBarUtils.resizeBars(dataSection[0], arr[0], this.maxNum);
         res(arr);
       } else {
-        this.innerForLoop(arr, this.maxNum, dataSection).then(result => {
+        this.innerForLoop(arr, dataSection).then(result => {
           arr = result.arr;
           dataSection = result.dataSection;
           var i = result.i;
