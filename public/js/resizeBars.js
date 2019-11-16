@@ -44,7 +44,7 @@ function swapBarsTimeout(
           toomany('yeet');
         }
       );
-    }, 10);
+    }, 50);
   });
   return {timeoutvalue: timeoutvalue, toomanypromises: toomanypromises};
 }

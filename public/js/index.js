@@ -187,7 +187,7 @@ beginSort.on('click', function() {
 });
 
 $(document).ready(function() {
-  unsortedArr = createRandomArray(20);
+  unsortedArr = createRandomArray(200);
   arraySortInProgress = unsortedArr.slice(0);
   maxnum = Math.max(...unsortedArr);
 

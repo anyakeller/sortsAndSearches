@@ -117,24 +117,26 @@ class QuickSort extends SortClass {
           var temp = arr[i + 1];
           arr[i + 1] = arr[arr.length - 1];
           arr[arr.length - 1] = temp;
-          this.dataBarUtils.swapBars(
+          var doASwap = this.dataBarUtils.swapBarsTimeout(
             dataSection[i + 1],
             arr[i + 1],
             dataSection[arr.length - 1],
             temp,
             this.maxNum
           );
-
-          this.quickSortLast(
-            arr.slice(0, i + 1),
-            dataSection.slice(0, i + 1)
-          ).then(ans => {
-            ans.push(arr[i + 1]);
+          this.currentTimeOut = doASwap.timeoutvalue;
+          doASwap.toomanypromises.then(ohno => {
             this.quickSortLast(
-              arr.slice(i + 2, arr.length),
-              dataSection.slice(i + 2, arr.length)
-            ).then(newAns => {
-              res(ans.concat(newAns));
+              arr.slice(0, i + 1),
+              dataSection.slice(0, i + 1)
+            ).then(ans => {
+              ans.push(arr[i + 1]);
+              this.quickSortLast(
+                arr.slice(i + 2, arr.length),
+                dataSection.slice(i + 2, arr.length)
+              ).then(newAns => {
+                res(ans.concat(newAns));
+              });
             });
           });
         });
