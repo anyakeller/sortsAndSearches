@@ -1,7 +1,7 @@
 import SortClass from './sortClass.js';
 class QuickSort extends SortClass {
-  constructor(ar, maxNum, data, resizeBarHeight, swapBars) {
-    super(ar, maxNum, data, resizeBarHeight, swapBars);
+  constructor(ar, maxNum, data, dataBarUtils, quickSortPivotOptn) {
+    super(ar, maxNum, data, dataBarUtils);
     this.pivotOptn = 'quickSortLast';
     this.issort = false;
     this.currentar = this.ar;
@@ -56,7 +56,7 @@ class QuickSort extends SortClass {
           var temp = arr[i];
           arr[i] = arr[compareIndex];
           arr[compareIndex] = temp;
-          this.swapBars(
+          this.dataBarUtils.swapBars(
             dataSection[i],
             arr[compareIndex],
             dataSection[compareIndex],
@@ -74,7 +74,7 @@ class QuickSort extends SortClass {
     return new Promise(res => {
       if (arr.length <= 1) {
         if (arr.length == 1)
-          this.resizeBarHeight(dataSection[0], arr[0], this.maxNum);
+          this.dataBarUtils.resizeBars(dataSection[0], arr[0], this.maxNum);
         res(arr);
       } else {
         this.innerForLoop(arr, this.maxNum, dataSection).then(result => {
@@ -84,7 +84,7 @@ class QuickSort extends SortClass {
           var temp = arr[i + 1];
           arr[i + 1] = arr[arr.length - 1];
           arr[arr.length - 1] = temp;
-          this.swapBars(
+          this.dataBarUtils.swapBars(
             dataSection[i + 1],
             arr[i + 1],
             dataSection[arr.length - 1],
