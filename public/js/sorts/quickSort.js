@@ -43,32 +43,49 @@ class QuickSort extends SortClass {
   }
 
   stupidSwapThing(pivotValue, i, compareIndex, arr, dataSection) {
-    if (compareIndex < arr.length - 1) {
-      if (arr[compareIndex] < pivotValue) {
-        i++;
-        var temp = arr[i];
-        arr[i] = arr[compareIndex];
-        arr[compareIndex] = temp;
-        this.dataBarUtils.swapBars(
-          dataSection[i],
-          arr[compareIndex],
-          dataSection[compareIndex],
-          temp,
-          this.maxNum
-        );
+    return new Promise((res, rej) => {
+      if (compareIndex < arr.length - 1) {
+        if (arr[compareIndex] < pivotValue) {
+          i++;
+          var temp = arr[i];
+          arr[i] = arr[compareIndex];
+          arr[compareIndex] = temp;
+          this.dataBarUtils.swapBars(
+            dataSection[i],
+            arr[compareIndex],
+            dataSection[compareIndex],
+            temp,
+            this.maxNum
+          );
+        }
+        this.stupidSwapThing(
+          pivotValue,
+          i,
+          compareIndex + 1,
+          arr,
+          dataSection
+        ).then(stupidResults => {
+          res(stupidResults);
+        });
+      } else {
+        res({arr: arr, dataSection: dataSection, i: i});
       }
-      return this.stupidSwapThing(pivotValue, i, compareIndex + 1, arr, dataSection);
-    } else {
-      return {arr: arr, dataSection: dataSection, i: i};
-    }
+    });
   }
 
   innerForLoop(arr, dataSection) {
     return new Promise(res => {
       var pivotValue = arr[arr.length - 1];
       var i = -1;
-      var stupidResults = this.stupidSwapThing(pivotValue, i, 0, arr, dataSection);
-      res({arr: stupidResults.arr, dataSection: stupidResults.dataSection, i: stupidResults.i});
+      this.stupidSwapThing(pivotValue, i, 0, arr, dataSection).then(
+        stupidResults => {
+          res({
+            arr: stupidResults.arr,
+            dataSection: stupidResults.dataSection,
+            i: stupidResults.i
+          });
+        }
+      );
     });
   }
 
