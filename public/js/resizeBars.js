@@ -1,6 +1,6 @@
 //GLOBAL helper functions
 //to resize bar height
-function resizeBarHeight(barElement, newvalue, maxnum) {
+function resizeBars(barElement, newvalue, maxnum) {
   return new Promise(res => {
     var newBarHeight = ((250 * newvalue) / maxnum).toString() + 'px';
     barElement.css('height', newBarHeight);
@@ -8,11 +8,11 @@ function resizeBarHeight(barElement, newvalue, maxnum) {
   });
 }
 
-function timeOutThingResize(barElement, newvalue, maxnum) {
+function resizeBarsTimeout(barElement, newvalue, maxnum) {
   var timeoutvalue;
   var toomanypromises = new Promise(toomany => {
     timeoutvalue = setTimeout(function() {
-      resizeBarHeight(barElement, newvalue, maxnum).then(resolved => {
+      resizeBars(barElement, newvalue, maxnum).then(resolved => {
         toomany('yeet');
       });
     }, 10);
@@ -29,7 +29,7 @@ function swapBars(barElement1, newvalue1, barElement2, newvalue2, maxnum) {
     res(true);
   });
 }
-function timeOutThingSwap(
+function swapBarsTimeout(
   barElement1,
   newvalue1,
   barElement2,
@@ -54,9 +54,9 @@ function sortStatus(arrayStatus, algoName, status) {
 }
 
 export {
-  resizeBarHeight,
+  resizeBars,
   swapBars,
-  timeOutThingResize,
-  timeOutThingSwap,
+  resizeBarsTimeout,
+	swapBarsTimeout,
   sortStatus
 };

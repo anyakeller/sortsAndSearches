@@ -1,11 +1,8 @@
 export default class SortClass{
-	constructor(ar,maxNum,data,resizeBarHeight,swapBars,timeOutThingResize,timeOutThingSwap){
+	constructor(ar,maxNum,data,dataBarUtils){
 		this.ar = ar;
 		this.data = data;
-		this.resizeBarHeight = resizeBarHeight;
-		this.swapBars = swapBars;
-		this.timeOutThingResize = timeOutThingResize;
-		this.timeOutThingSwap = timeOutThingSwap;
+		this.dataBarUtils = dataBarUtils;
 		this.maxNum = maxNum;
 		this.arleng = ar.length;
 		this.sortStatus = false;

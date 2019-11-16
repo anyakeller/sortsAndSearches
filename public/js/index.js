@@ -1,6 +1,6 @@
 import BubbleSort from './sorts/bubblesort.js';
 import QuickSort from './sorts/quickSort.js';
-import {resizeBarHeight, swapBars, timeOutThingResize,timeOutThingSwap,sortStatus} from './resizeBars.js';
+import * as dataBarUtils from './resizeBars.js';
 
 //the initial unsorted array
 function createRandomArray(leng) {
@@ -86,7 +86,7 @@ function reset() {
   makeDataBar(unsortedArr);
   arraySortInProgress = unsortedArr.slice(0);
 
-  sortStatus(sortStatusElement, currentSort, 'reset');
+  dataBarUtils.sortStatus(sortStatusElement, currentSort, 'reset');
 }
 $('#reset').on('click', function() {
   // console.log(unsortedArr);
@@ -97,7 +97,7 @@ function pause() {
   if (currentsortobj[currentsortobjkey] != null)
     console.log(currentsortobj[currentsortobjkey]);
   currentsortobj[currentsortobjkey].pause();
-  sortStatus(sortStatusElement, currentSort, 'paused');
+  dataBarUtils.sortStatus(sortStatusElement, currentSort, 'paused');
 }
 $('#pause').on('click', function() {
   pause();
@@ -129,7 +129,7 @@ $('.sortOptionBtn').on('click', function() {
     quickSortOptionsToggle.hide();
   }
   currentsortobjkey = currentSort;
-  sortStatus(sortStatusElement, currentSort, ' ready');
+  dataBarUtils.sortStatus(sortStatusElement, currentSort, ' ready');
 });
 
 $('.quickSortOptionBtn').on('click', function() {
@@ -138,7 +138,7 @@ $('.quickSortOptionBtn').on('click', function() {
   var activeQuickChoice = $(this);
   activeQuickChoice.addClass('quickSortOptionActive');
   var sortChosen = activeQuickChoice.attr('data-sort');
-  sortStatus(sortStatusElement, sortChosen, ' ready');
+  dataBarUtils.sortStatus(sortStatusElement, sortChosen, ' ready');
 });
 
 //beginSort onclick
@@ -150,15 +150,12 @@ beginSort.on('click', function() {
   if (currentsortobj[currentsortobjkey] == null) {
     if (sortChosen === 'bubbleSort') {
       console.log('bubbleSort Begin');
-      sortStatus(sortStatusElement, sortChosen, 'in progress');
+      dataBarUtils.sortStatus(sortStatusElement, sortChosen, 'in progress');
       currentsortobj[currentsortobjkey] = new BubbleSort(
         arraySortInProgress,
         maxnum,
         dataBars,
-        resizeBarHeight,
-        swapBars,
-				timeOutThingResize,
-				timeOutThingSwap
+        dataBarUtils
       );
 
       // console.log(sorted);
@@ -169,9 +166,7 @@ beginSort.on('click', function() {
         arraySortInProgress,
         maxnum,
         dataBars,
-        resizeBarHeight,
-        swapBars,
-        quickSortOptn
+        dataBarUtils
       );
     } else if (sortChosen === 'fartSort') {
       console.log('fart Begin');

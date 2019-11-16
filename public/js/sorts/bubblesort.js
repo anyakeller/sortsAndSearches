@@ -4,19 +4,13 @@ class BubbleSort extends SortClass {
     ar,
     maxNum,
     data,
-    resizeBarHeight,
-    swapBars,
-    timeOutThingResize,
-    timeOutThingSwap
+		dataBarUtils
   ) {
     super(
       ar,
       maxNum,
       data,
-      resizeBarHeight,
-      swapBars,
-      timeOutThingResize,
-      timeOutThingSwap
+			dataBarUtils
     );
     this.issort = false;
     this.currentar = this.ar;
@@ -38,9 +32,10 @@ class BubbleSort extends SortClass {
   }
 
   start() {
+		console.log(this);
     if (this.ispause) this.ispause = false;
     if (this.isreset) this.isreset = false;
-    this.doSort()
+		this.doSort()
       .then(sortFinished => {
         console.log(sortFinished);
       })
@@ -57,13 +52,14 @@ class BubbleSort extends SortClass {
         this.currentar[this.bubbleCounter] = nextnum;
         this.currentar[this.bubbleCounter + 1] = prevnum;
 
-        var killme = this.timeOutThingSwap(
+        var killme = this.dataBarUtils.swapBarsTimeout(
           this.data[this.bubbleCounter],
           nextnum,
           this.data[this.bubbleCounter + 1],
           prevnum,
           this.maxNum
         );
+				console.log(killme);
         this.currentTimeOut = killme.timeoutvalue;
         killme.toomanypromises.then(yeet => {
           console.log('swapping at', this.bubbleCounter);
