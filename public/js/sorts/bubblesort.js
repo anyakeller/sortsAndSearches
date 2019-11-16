@@ -40,68 +40,74 @@ class BubbleSort extends SortClass {
     if (this.ispause) this.ispause = false;
     if (this.isreset) this.isreset = false;
     this.doSort(false)
-      .then(result => {
-        console.log(result);
+      .then(sortFinished => {
+        console.log(sortFinished);
       })
       .catch(poop => console.log(poop));
   }
 
-  doSort(isit) {
+  // helper function to deal with comparing two values
+  // promise resolves with whether the swap happened or not
+  dealWithComparison(prevnum, nextnum) {
     return new Promise((res, rej) => {
-      if (!this.ispause && this.reset) {
-        isit = true;
-        //recursive method
-        clearTimeout(this.currentTimeOut);
-        this.currentTimeOut = null;
-        if (this.bubbleCounter < this.arleng - 1) {
-          console.log('help1');
-          var prevnum = this.currentar[this.bubbleCounter];
-          var nextnum = this.currentar[this.bubbleCounter + 1];
-          if (prevnum > nextnum) {
-            isit = false;
-            this.currentar[this.bubbleCounter] = nextnum;
-            this.currentar[this.bubbleCounter + 1] = prevnum;
+      // if you need to swap
+      if (prevnum < nextnum) {
+        console.log("it's less");
+        this.currentar[this.bubbleCounter] = nextnum;
+        this.currentar[this.bubbleCounter + 1] = prevnum;
 
-            var killme = this.timeOutThingSwap(
-              this.data[this.bubbleCounter],
-              nextnum,
-              this.data[this.bubbleCounter + 1],
-              prevnum,
-              this.maxNum
-            );
-            this.currentTimeOut = killme.timeoutvalue;
-            killme.toomanypromises.then(yeet => {
-              console.log(this.bubbleCounter);
+        var killme = this.timeOutThingSwap(
+          this.data[this.bubbleCounter],
+          nextnum,
+          this.data[this.bubbleCounter + 1],
+          prevnum,
+          this.maxNum
+        );
+        this.currentTimeOut = killme.timeoutvalue;
+        killme.toomanypromises.then(yeet => {
+          console.log('swapping at', this.bubbleCounter);
+          res(true); // tell the function that called this that the swap happened
+        });
+      } else {
+        res(false); //tell the function that called this that the swap didn't happen
+      }
+    });
+  }
+
+  //recursive method
+  doSort() {
+    return new Promise((res, rej) => {
+      clearTimeout(this.currentTimeOut);
+      this.currentTimeOut = null;
+      // if the counter is not at the last element, i.e. there are two left to possibly swap
+      if (this.bubbleCounter < this.arleng - 1) {
+        console.log('doing rounds at', this.bubbleCounter);
+        // get the current and next number to compare
+        var prevnum = this.currentar[this.bubbleCounter];
+        var nextnum = this.currentar[this.bubbleCounter + 1];
+        //use a helper function that compares and waits for swap if neccessary
+        this.dealWithComparison(prevnum, nextnum).then(hasDoneSwap => {
+          // if a swap has not happened and it's the end of the array then it's sorted
+          if (!hasDoneSwap && this.bubbleCounter == this.arleng - 2) {
+            this.issort = true;
+            res(true); //yay!
+          } else {
+            //otherwise reset or increment and then rerun sort
+            //if it has hit the end of the array
+            if (this.bubbleCounter == this.arleng - 2) {
+              this.bubbleCounter = 0;
+            } else {
+              //otherwise increment counter
               this.bubbleCounter++;
-              this.doSort(isit)
-                .then(poo => {
-                  res(this.currentar);
-                })
-                .catch(poop => {
-                  res('increment');
-                });
+            }
+            //rerun sort function
+            this.doSort().then(didItDo => {
+              res(didItDo);
             });
           }
-        } else if (!isit) {
-          if (this.bubbleCounter < this.currentar.length - 1)
-            this.bubbleCounter++;
-          else if (this.bubbleCounter == this.currentar.length - 1)
-            this.bubbleCounter = 0;
-          this.doSort(false)
-            .then(poo => {
-              res(this.currentar);
-            })
-            .catch(poop => {
-              res('restat increment');
-            });
-        } else if (isit && this.bubbleCounter == this.currentar.length - 1) {
-          this.issort = true;
-          res(this.currentar);
-        }
-      } else if (this.issort) {
-        res(this.currentar);
+        });
       } else {
-        rej('paused');
+        rej('ahhh');
       }
     });
   }
