@@ -52,7 +52,7 @@ class BubbleSort extends SortClass {
   dealWithComparison(prevnum, nextnum) {
     return new Promise((res, rej) => {
       // if you need to swap
-      if (prevnum < nextnum) {
+      if (prevnum > nextnum) {
         console.log("it's less");
         this.currentar[this.bubbleCounter] = nextnum;
         this.currentar[this.bubbleCounter + 1] = prevnum;
