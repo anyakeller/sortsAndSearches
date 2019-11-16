@@ -21,6 +21,7 @@ class BubbleSort extends SortClass {
     this.issort = false;
     this.currentar = this.ar;
     this.bubbleCounter = 0;
+		this.didSwapThisRound = false;
     this.currentTimeOut = null;
   }
 
@@ -39,7 +40,7 @@ class BubbleSort extends SortClass {
   start() {
     if (this.ispause) this.ispause = false;
     if (this.isreset) this.isreset = false;
-    this.doSort(false)
+    this.doSort()
       .then(sortFinished => {
         console.log(sortFinished);
       })
@@ -87,8 +88,10 @@ class BubbleSort extends SortClass {
         var nextnum = this.currentar[this.bubbleCounter + 1];
         //use a helper function that compares and waits for swap if neccessary
         this.dealWithComparison(prevnum, nextnum).then(hasDoneSwap => {
+					if(hasDoneSwap) this.didSwapThisRound = true;
           // if a swap has not happened and it's the end of the array then it's sorted
-          if (!hasDoneSwap && this.bubbleCounter == this.arleng - 2) {
+          if (!this.didSwapThisRound && this.bubbleCounter == this.arleng - 2) {
+						console.log(this.currentar);
             this.issort = true;
             res(true); //yay!
           } else {
@@ -96,6 +99,7 @@ class BubbleSort extends SortClass {
             //if it has hit the end of the array
             if (this.bubbleCounter == this.arleng - 2) {
               this.bubbleCounter = 0;
+							this.didSwapThisRound = false;
             } else {
               //otherwise increment counter
               this.bubbleCounter++;
