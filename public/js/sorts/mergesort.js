@@ -32,16 +32,11 @@ class MergeSort extends SortClass {
 
   mergeWhileLoop;
 
-  merge(ans, dataAns, f, l, part1, part2, wherewasi) {
+  merge(ans, f, l, first, last, wherewasi) {
     return new Promise(res => {
-      let first = part1.ans;
-      let last = part2.ans;
-      let firstData = part1.dataAns;
-      let lastData = part2.dataAns;
       while (f < first.length && l < last.length) {
         if (first[f] < last[l]) {
           ans.push(first[f]);
-          dataAns.push(firstData[f]);
           this.dataBarUtils.resizeBars(
             this.data[wherewasi],
             ans[ans.length - 1],
@@ -50,7 +45,6 @@ class MergeSort extends SortClass {
           f++;
         } else {
           ans.push(last[l]);
-          dataAns.push(lastData[l]);
           this.dataBarUtils.resizeBars(
             this.data[wherewasi],
             ans[ans.length - 1],
@@ -71,10 +65,7 @@ class MergeSort extends SortClass {
           );
           wherewasi++;
         }
-        res({
-          ans: ans,
-          dataAns: dataAns.concat(lastData.slice(l))
-        });
+        res(ans);
       } else if (f < first.length) {
         for (var position = f; position < first.length; position++) {
           ans.push(first[position]);
@@ -85,34 +76,26 @@ class MergeSort extends SortClass {
           );
           wherewasi++;
         }
-        res({
-          ans: ans,
-          dataAns: dataAns.concat(firstData.slice(f))
-        });
+        res(ans);
       } else {
         console.log('else');
-        res({ans: ans, dataAns: dataAns});
+        res(ans);
       }
     });
   }
 
-  mergeSort(arr, dataSection, wherewasi) {
+  mergeSort(arr, wherewasi) {
     return new Promise(res => {
       if (arr.length > 1) {
         var end = arr.length - 1;
         var middle = Math.floor((end + 1) / 2);
-        var part1 = this.mergeSort(
-          arr.slice(0, middle),
-          dataSection.slice(0, middle),
-          wherewasi
-        );
+        var part1 = this.mergeSort(arr.slice(0, middle), wherewasi);
         var part2 = this.mergeSort(
           arr.slice(middle, end + 1),
-          dataSection.slice(middle, end + 1),
           wherewasi + middle
         );
         Promise.all([part1, part2]).then(values => {
-          this.merge([], [], 0, 0, values[0], values[1], wherewasi).then(
+          this.merge([], 0, 0, values[0], values[1], wherewasi).then(
             mergeResult => {
               res(mergeResult);
             }
@@ -120,7 +103,7 @@ class MergeSort extends SortClass {
         });
       } else {
         this.dataBarUtils.resizeBars(this.data[wherewasi], arr[0], this.maxNum);
-        res({ans: arr, dataAns: dataSection});
+        res(arr);
       }
     });
   }
@@ -130,7 +113,7 @@ class MergeSort extends SortClass {
     return new Promise((res, rej) => {
       clearTimeout(this.currentTimeOut);
       this.currentTimeOut = null;
-      console.log(this.mergeSort(this.currentar, this.data, 0));
+      console.log(this.mergeSort(this.currentar, 0));
       res(true);
     });
   }
