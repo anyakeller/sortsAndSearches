@@ -89,7 +89,7 @@ function reset() {
   makeDataBar(unsortedArr);
   arraySortInProgress = unsortedArr.slice(0);
 
-  dataBarUtils.sortStatus(sortStatusElement, currentSort, 'reset');
+  dataBarUtils.sortStatus(sortStatusElement, currentsortobjkey, 'reset');
 }
 $('#reset').on('click', function() {
   // console.log(unsortedArr);
@@ -128,7 +128,7 @@ $('.sortOptionBtn').on('click', function() {
     var activeQuickChoice = $('.quickSortOptionActive');
     quickSortOptn = activeQuickChoice.attr('data-sort');
     sortChosen = quickSortOptn;
-		if (!sortChosen) sortChosen = "quickSortLast";
+		if (!sortChosen) sortChosen = "quickSortFirst";
 		console.log(sortChosen);
   } else {
     quickSortOptionsToggle.hide();
@@ -144,6 +144,7 @@ $('.quickSortOptionBtn').on('click', function() {
   var activeQuickChoice = $(this);
   activeQuickChoice.addClass('quickSortOptionActive');
   var sortChosen = activeQuickChoice.attr('data-sort');
+	currentsortobjkey = sortChosen;
   dataBarUtils.sortStatus(sortStatusElement, sortChosen, ' ready');
 });
 
