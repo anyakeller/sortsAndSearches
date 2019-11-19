@@ -128,6 +128,8 @@ $('.sortOptionBtn').on('click', function() {
     var activeQuickChoice = $('.quickSortOptionActive');
     quickSortOptn = activeQuickChoice.attr('data-sort');
     sortChosen = quickSortOptn;
+		if (!sortChosen) sortChosen = "quickSortLast";
+		console.log(sortChosen);
   } else {
     quickSortOptionsToggle.hide();
   }
@@ -149,7 +151,6 @@ $('.quickSortOptionBtn').on('click', function() {
 beginSort.on('click', function() {
   var activeSortChoice = $('.sortOptnActive');
   var sortChosen = activeSortChoice.attr('data-sort');
-  currentsortobjkey = sortChosen;
   var sorted;
   if (currentsortobj[currentsortobjkey] == null) {
     if (sortChosen === 'bubbleSort') {
@@ -170,7 +171,8 @@ beginSort.on('click', function() {
         arraySortInProgress,
         maxnum,
         dataBars,
-        dataBarUtils
+        dataBarUtils,
+				currentsortobjkey
       );
     } else if (sortChosen === 'fartSort') {
       console.log('this is actually merge sort');
