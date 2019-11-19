@@ -33,90 +33,96 @@ class MergeSort extends SortClass {
   mergeWhileLoop;
 
   merge(ans, dataAns, f, l, part1, part2, wherewasi) {
-    let first = part1.ans;
-    let last = part2.ans;
-    let firstData = part1.dataAns;
-    let lastData = part2.dataAns;
-    while (f < first.length && l < last.length) {
-      if (first[f] < last[l]) {
-        ans.push(first[f]);
-        dataAns.push(firstData[f]);
-        this.dataBarUtils.resizeBars(
-          this.data[wherewasi],
-          ans[ans.length - 1],
-          this.maxNum
-        );
-        f++;
-      } else {
-        ans.push(last[l]);
-        dataAns.push(lastData[l]);
-        this.dataBarUtils.resizeBars(
-          this.data[wherewasi],
-          ans[ans.length - 1],
-          this.maxNum
-        );
-        l++;
+    return new Promise(res => {
+      let first = part1.ans;
+      let last = part2.ans;
+      let firstData = part1.dataAns;
+      let lastData = part2.dataAns;
+      while (f < first.length && l < last.length) {
+        if (first[f] < last[l]) {
+          ans.push(first[f]);
+          dataAns.push(firstData[f]);
+          this.dataBarUtils.resizeBars(
+            this.data[wherewasi],
+            ans[ans.length - 1],
+            this.maxNum
+          );
+          f++;
+        } else {
+          ans.push(last[l]);
+          dataAns.push(lastData[l]);
+          this.dataBarUtils.resizeBars(
+            this.data[wherewasi],
+            ans[ans.length - 1],
+            this.maxNum
+          );
+          l++;
+        }
+        wherewasi++;
       }
-			wherewasi++;
-    }
 
-    if (l < last.length) {
-      console.log(this.data);
-      for (var position = l; position < last.length; position++) {
-        console.log(wherewasi + position + ans.length);
-        ans.push(last[position]);
-        this.dataBarUtils.resizeBars(
-          this.data[wherewasi],
-          ans[ans.length - 1],
-          this.maxNum
-        );
-				wherewasi++;
+      if (l < last.length) {
+        for (var position = l; position < last.length; position++) {
+          ans.push(last[position]);
+          this.dataBarUtils.resizeBars(
+            this.data[wherewasi],
+            ans[ans.length - 1],
+            this.maxNum
+          );
+          wherewasi++;
+        }
+        res({
+          ans: ans,
+          dataAns: dataAns.concat(lastData.slice(l))
+        });
+      } else if (f < first.length) {
+        for (var position = f; position < first.length; position++) {
+          ans.push(first[position]);
+          this.dataBarUtils.resizeBars(
+            this.data[wherewasi],
+            ans[ans.length - 1],
+            this.maxNum
+          );
+          wherewasi++;
+        }
+        res({
+          ans: ans,
+          dataAns: dataAns.concat(firstData.slice(f))
+        });
+      } else {
+        console.log('else');
+        res({ans: ans, dataAns: dataAns});
       }
-      return {
-        ans: ans,
-        dataAns: dataAns.concat(lastData.slice(l))
-      };
-    } else if (f < first.length) {
-      for (var position = f; position < first.length; position++) {
-        console.log(wherewasi + position + ans.length);
-        ans.push(first[position]);
-        this.dataBarUtils.resizeBars(
-          this.data[wherewasi],
-          ans[ans.length - 1],
-          this.maxNum
-        );
-				wherewasi++;
-      }
-      return {
-        ans: ans,
-        dataAns: dataAns.concat(firstData.slice(f))
-      };
-    } else {
-      console.log('else');
-      return {ans: ans, dataAns: dataAns};
-    }
+    });
   }
 
   mergeSort(arr, dataSection, wherewasi) {
-    if (arr.length > 1) {
-      var end = arr.length - 1;
-      var middle = Math.floor((end + 1) / 2);
-      var part1 = this.mergeSort(
-        arr.slice(0, middle),
-        dataSection.slice(0, middle),
-        wherewasi
-      );
-      var part2 = this.mergeSort(
-        arr.slice(middle, end + 1),
-        dataSection.slice(middle, end + 1),
-        wherewasi + middle
-      );
-      var mergeResult = this.merge([], [], 0, 0, part1, part2, wherewasi);
-      return mergeResult;
-    } else {
-      this.dataBarUtils.resizeBars(this.data[wherewasi], arr[0], this.maxNum);
-      return {ans: arr, dataAns: dataSection};
-    }
+    return new Promise(res => {
+      if (arr.length > 1) {
+        var end = arr.length - 1;
+        var middle = Math.floor((end + 1) / 2);
+        var part1 = this.mergeSort(
+          arr.slice(0, middle),
+          dataSection.slice(0, middle),
+          wherewasi
+        );
+        var part2 = this.mergeSort(
+          arr.slice(middle, end + 1),
+          dataSection.slice(middle, end + 1),
+          wherewasi + middle
+        );
+        Promise.all([part1, part2]).then(values => {
+          this.merge([], [], 0, 0, values[0], values[1], wherewasi).then(
+            mergeResult => {
+              res(mergeResult);
+            }
+          );
+        });
+      } else {
+        this.dataBarUtils.resizeBars(this.data[wherewasi], arr[0], this.maxNum);
+        res({ans: arr, dataAns: dataSection});
+      }
+    });
   }
 
   //recursive method

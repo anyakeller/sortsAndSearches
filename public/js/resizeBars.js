@@ -50,13 +50,7 @@ function swapBarsTimeout(
 }
 
 function sortStatus(arrayStatus, algoName, status) {
-  arrayStatus.text(algoName + ' ' + status);
+  $('#arrayStatus').text(algoName + ' ' + status);
 }
 
-export {
-  resizeBars,
-  swapBars,
-  resizeBarsTimeout,
-	swapBarsTimeout,
-  sortStatus
-};
+export {resizeBars, swapBars, resizeBarsTimeout, swapBarsTimeout, sortStatus};
