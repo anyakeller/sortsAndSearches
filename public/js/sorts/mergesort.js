@@ -30,42 +30,38 @@ class MergeSort extends SortClass {
       .catch(poop => console.log(poop));
   }
 
-  merge(ans, dataAns,f,l, part1,part2 ) {
-
-		let first = part1.ans;
-		let last = part2.ans;
-		let firstData = part1.dataAns;
-		let lastData = part2.dataAns;
-    if (f < first.length && l < last.length) {
+  merge(ans, dataAns, f, l, part1, part2) {
+    let first = part1.ans;
+    let last = part2.ans;
+    let firstData = part1.dataAns;
+    let lastData = part2.dataAns;
+    while (f < first.length && l < last.length) {
       if (first[f] < last[l]) {
         ans.push(first[f]);
-				dataAns.push(firstData[f]);
+        dataAns.push(firstData[f]);
+
         f++;
       } else {
         ans.push(last[l]);
-				dataAns.push(lastData[l]);
+        dataAns.push(lastData[l]);
         l++;
       }
-      var resultofmerge = this.merge(
-        ans,
-        dataAns,
-				f,
-				l,
-        part1,
-				part2
-      );
-      return resultofmerge;
+    }
+
+    if (f == first.length) {
+      console.log(ans);
+      return {
+        ans: ans.concat(last.slice(l)),
+        dataAns: dataAns.concat(lastData.slice(l))
+      };
+    } else if ((l = last.length)) {
+      console.log(ans);
+      return {
+        ans: ans.concat(first.slice(f)),
+        dataAns: dataAns.concat(firstData.slice(f))
+      };
     } else {
-      if (f == first.length)
-        return {
-          ans: ans.concat(last.slice(l)),
-          dataAns: dataAns.concat(lastData.slice(l))
-        };
-      else
-        return {
-          ans: ans.concat(first.slice(f)),
-          dataAns: dataAns.concat(firstData.slice(f))
-        };
+      return {ans: ans, dataAns: dataAns};
     }
   }
 
@@ -81,16 +77,16 @@ class MergeSort extends SortClass {
         arr.slice(middle, end + 1),
         dataSection.slice(middle, end + 1)
       );
-      var theans = this.merge(
-        [],
-        [],
-        0,
-        0,
-        part1,
-        part2
-      );
-      return {ans: theans.ans, dataAns: theans.dataAns};
+      if (typeof part1 != 'undefined' && typeof part2 != 'undefined') {
+        var mergeResult = this.merge([], [], 0, 0, part1, part2);
+        return mergeResult;
+      } else {
+        console.log('both undefined ugh');
+        return {ans: arr, dataAns: dataSection};
+      }
     } else {
+      console.log('ahhh');
+      console.log(arr);
       return {ans: arr, dataAns: dataSection};
     }
   }
