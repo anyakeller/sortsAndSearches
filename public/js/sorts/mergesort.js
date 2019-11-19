@@ -35,26 +35,37 @@ class MergeSort extends SortClass {
       if (f < first.length && l < last.length) {
         if (first[f] < last[l]) {
           ans.push(first[f]);
-          this.dataBarUtils.resizeBars(
+          var woah = this.dataBarUtils.resizeBarsTimeout(
             this.data[wherewasi],
             ans[ans.length - 1],
             this.maxNum
           );
+          this.currentTimeOut = woah.timeoutvalue;
           f++;
+          woah.toomanypromises.then(helpme => {
+            this.mergeWhileLoop(ans, f, l, first, last, wherewasi + 1).then(
+              mergeWhileResult => {
+                res(mergeWhileResult);
+              }
+            );
+          });
         } else {
           ans.push(last[l]);
-          this.dataBarUtils.resizeBars(
+          var woah = this.dataBarUtils.resizeBarsTimeout(
             this.data[wherewasi],
             ans[ans.length - 1],
             this.maxNum
           );
+          this.currentTimeOut = woah.timeoutvalue;
           l++;
+          woah.toomanypromises.then(helpme => {
+            this.mergeWhileLoop(ans, f, l, first, last, wherewasi + 1).then(
+              mergeWhileResult => {
+                res(mergeWhileResult);
+              }
+            );
+          });
         }
-        this.mergeWhileLoop(ans, f, l, first, last, wherewasi + 1).then(
-          mergeWhileResult => {
-            res(mergeWhileResult);
-          }
-        );
       } else {
         res({ans: ans, f: f, l: l, wherewasi: wherewasi});
       }
