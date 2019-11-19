@@ -30,11 +30,9 @@ class MergeSort extends SortClass {
       .catch(poop => console.log(poop));
   }
 
-  mergeWhileLoop;
-
-  merge(ans, f, l, first, last, wherewasi) {
+  mergeWhileLoop(ans, f, l, first, last, wherewasi) {
     return new Promise(res => {
-      while (f < first.length && l < last.length) {
+      if (f < first.length && l < last.length) {
         if (first[f] < last[l]) {
           ans.push(first[f]);
           this.dataBarUtils.resizeBars(
@@ -52,34 +50,55 @@ class MergeSort extends SortClass {
           );
           l++;
         }
-        wherewasi++;
-      }
-
-      if (l < last.length) {
-        for (var position = l; position < last.length; position++) {
-          ans.push(last[position]);
-          this.dataBarUtils.resizeBars(
-            this.data[wherewasi],
-            ans[ans.length - 1],
-            this.maxNum
-          );
-          wherewasi++;
-        }
-        res(ans);
-      } else if (f < first.length) {
-        for (var position = f; position < first.length; position++) {
-          ans.push(first[position]);
-          this.dataBarUtils.resizeBars(
-            this.data[wherewasi],
-            ans[ans.length - 1],
-            this.maxNum
-          );
-          wherewasi++;
-        }
-        res(ans);
+        this.mergeWhileLoop(ans, f, l, first, last, wherewasi + 1).then(
+          mergeWhileResult => {
+            res(mergeWhileResult);
+          }
+        );
       } else {
-        console.log('else');
-        res(ans);
+        res({ans: ans, f: f, l: l, wherewasi: wherewasi});
+      }
+    });
+  }
+
+  merge(ans, f, l, first, last, wherewasi) {
+    return new Promise(res => {
+      if (f < first.length && l < last.length) {
+        this.mergeWhileLoop(ans, f, l, first, last, wherewasi).then(
+          mergeWhileResult => {
+            ans = mergeWhileResult.ans;
+            f = mergeWhileResult.f;
+            l = mergeWhileResult.l;
+            wherewasi = mergeWhileResult.wherewasi;
+
+            if (l < last.length) {
+              for (var position = l; position < last.length; position++) {
+                ans.push(last[position]);
+                this.dataBarUtils.resizeBars(
+                  this.data[wherewasi],
+                  ans[ans.length - 1],
+                  this.maxNum
+                );
+                wherewasi++;
+              }
+              res(ans);
+            } else if (f < first.length) {
+              for (var position = f; position < first.length; position++) {
+                ans.push(first[position]);
+                this.dataBarUtils.resizeBars(
+                  this.data[wherewasi],
+                  ans[ans.length - 1],
+                  this.maxNum
+                );
+                wherewasi++;
+              }
+              res(ans);
+            } else {
+              console.log('else');
+              res(ans);
+            }
+          }
+        );
       }
     });
   }
