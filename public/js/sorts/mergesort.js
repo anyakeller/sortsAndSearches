@@ -4,7 +4,7 @@ class MergeSort extends SortClass {
     super(ar, maxNum, data, dataBarUtils);
     this.issort = false;
     this.currentar = this.ar;
-    this.currentTimeOut = null;
+    this.currentTimeOut = [];
   }
 
   pause() {

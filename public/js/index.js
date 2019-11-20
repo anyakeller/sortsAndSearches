@@ -34,7 +34,7 @@ var visualization = $('.visualization'); //the visual area
 var sortOptionBtn = $('.sortOptionBtn'); //the radio toggle for the algo chosen
 var beginSort = $('#beginSort'); //begin sort button
 var quickSortOptionsToggle = $('#quickSortOptionsToggle'); //toggle hide/show quicksort optns
-var currentSort = 'bubbleSort'; //the current sort
+var currentSort = 'mergeSort'; //the current sort
 
 //GLOBAL CREATED HTML ELEMENTS
 var dataBars; //the actual data bar elements
@@ -50,7 +50,7 @@ var currentsortobj = {
 	mergeSort:null,
 };
 var quickSortOptn = 'quickSortLast';
-var currentsortobjkey = 'bubbleSort';
+var currentsortobjkey = 'mergeSort';
 
 //create a data bar element function
 function makeDataBar(arr) {
@@ -175,7 +175,7 @@ beginSort.on('click', function() {
         dataBarUtils,
 				currentsortobjkey
       );
-    } else if (sortChosen === 'fartSort') {
+    } else if (sortChosen === 'mergeSort') {
       console.log('this is actually merge sort');
       dataBarUtils.sortStatus(sortStatusElement, sortChosen, 'in progress');
       currentsortobj[currentsortobjkey] = new MergeSort(
