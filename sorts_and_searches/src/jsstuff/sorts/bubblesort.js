@@ -30,11 +30,6 @@ class BubbleSort extends SortClass {
   reset() {
     this.pause();
   }
-	
-	//the pure sort no visualization
-	pure(){
-
-	}
 
   start() {
 		console.log(this);

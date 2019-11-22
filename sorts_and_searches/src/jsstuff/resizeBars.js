@@ -15,7 +15,7 @@ function resizeBarsTimeout(barElement, newvalue, maxnum) {
       resizeBars(barElement, newvalue, maxnum).then(resolved => {
         toomany('yeet');
       });
-    }, 1);
+    }, 10);
   });
   return {timeoutvalue: timeoutvalue, toomanypromises: toomanypromises};
 }
@@ -44,7 +44,7 @@ function swapBarsTimeout(
           toomany('yeet');
         }
       );
-    }, 1);
+    }, 10);
   });
   return {timeoutvalue: timeoutvalue, toomanypromises: toomanypromises};
 }
